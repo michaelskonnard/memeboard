@@ -18,10 +18,7 @@
       <p></p>
       <router-link to="/person">Add Info</router-link>
       <p></p>
-      <a
-        href="https://github.com/BYU-CS-260-Winter-2020/lab-4-museum-of-ordinary-objects-michaelskonnard"
-        >github</a
-      >
+      <a href="https://github.com/michaelskonnard/memeboard.git">github</a>
     </div>
   </div>
 </template>
