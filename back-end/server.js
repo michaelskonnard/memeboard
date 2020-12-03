@@ -12,7 +12,7 @@ app.use(
 // Configure multer so that it will upload to '../front-end/public/images'
 const multer = require("multer");
 const upload = multer({
-  dest: "../front-end/public/images/",
+  dest: "/var/www/memeboard.michaelskonnard.com/images/",
   limits: {
     fileSize: 10000000,
   },
@@ -162,4 +162,4 @@ app.put("/api/persons/:id", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server listening on port 3000!"));
+app.listen(4000, () => console.log("Server listening on port 4000!"));
