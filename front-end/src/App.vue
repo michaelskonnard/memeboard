@@ -18,7 +18,9 @@
       <p></p>
       <router-link to="/person">Add Info</router-link>
       <p></p>
-      <a href="https://github.com/michaelskonnard/memeboard.git">github</a>
+      <a href="https://github.com/michaelskonnard/memeboard.git"
+        >GitHub: Michael Skonnard, Ben Millett</a
+      >
     </div>
   </div>
 </template>
