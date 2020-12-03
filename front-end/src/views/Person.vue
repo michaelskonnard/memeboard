@@ -1,63 +1,65 @@
 <template>
   <div class="admin">
-    <h1>The Admin Page!</h1>
+    <h1>The Person Page!</h1>
     <div class="heading">
+      <!--Adding a person-->
       <div class="circle">1</div>
-      <h2>Add a Meme</h2>
+      <h2>Add a Contributor</h2>
     </div>
     <div class="add">
-      <!--Adding a meme-->
       <div class="form">
-        <input v-model="date" placeholder="Date Created" />
+        <input v-model="name" placeholder="Enter Your Name" />
+        <p></p>
+        <input v-model="date" placeholder="Date Joined" />
         <p></p>
         <textarea
           class="textbox"
-          v-model="caption"
-          placeholder="Meme Caption"
+          v-model="description"
+          placeholder="Tell everyone a bit about yourself!"
         />
         <p></p>
-        <input type="file" caption="photo" @change="fileChanged" />
-        <button @click="upload">Upload</button>
+        <button @click="upload">Submit</button>
       </div>
-      <div class="upload" v-if="addItem">
-        <h2>{{ addItem.date }}</h2>
+      <div class="upload" v-if="addPerson">
+        <h2>{{ addPerson.name }}</h2>
+        <h2>{{ addPerson.date }}</h2>
         <textarea
           class="textbox"
           readonly
-          v-model="caption"
-          placeholder="Meme Caption"
+          v-model="description"
+          placeholder="User Information"
         />
-        <img :src="addItem.path" />
       </div>
     </div>
     <div class="heading">
       <div class="circle">2</div>
-      <h2>Edit/Delete an Item</h2>
+      <h2>Edit/Delete a Contributor</h2>
     </div>
     <div class="edit">
       <div class="form">
-        <input v-model="findCaption" placeholder="Search" />
+        <input v-model="findName" placeholder="Search" />
         <div class="suggestions" v-if="suggestions.length > 0">
           <div
             class="suggestion"
             v-for="s in suggestions"
             :key="s.id"
-            @click="selectItem(s)"
+            @click="selectPerson(s)"
           >
-            {{ s.caption }}
+            {{ s.name }}
           </div>
         </div>
       </div>
-      <div class="upload" v-if="findItem">
-        <input v-model="findItem.date" />
+      <div class="upload" v-if="findPerson">
+        <input v-model="findPerson.name" />
         <p></p>
-        <textarea class="textbox" v-model="findItem.caption" />
+        <input v-model="findPerson.date" />
         <p></p>
-        <img :src="findItem.path" />
+        <textarea class="textbox" v-model="findPerson.description" />
+        <p></p>
       </div>
-      <div class="actions" v-if="findItem">
-        <button @click="deleteItem(findItem)">Delete</button>
-        <button @click="editItem(findItem)">Edit</button>
+      <div class="actions" v-if="findPerson">
+        <button @click="deletePerson(findPerson)">Delete</button>
+        <button @click="editPerson(findPerson)">Edit</button>
       </div>
     </div>
   </div>
@@ -69,52 +71,50 @@ export default {
   name: "Admin",
   data() {
     return {
-      caption: "",
+      name: "",
       date: "",
-      file: null,
-      addItem: null,
-      items: [],
-      findCaption: "",
-      findItem: null,
+      description: "",
+      addPerson: null,
+      persons: [],
+      findName: "",
+      findPerson: null,
     };
   },
   computed: {
     suggestions() {
-      let items = this.items.filter((item) =>
-        item.caption.toLowerCase().startsWith(this.findCaption.toLowerCase())
+      let persons = this.persons.filter((person) =>
+        person.name.toLowerCase().startsWith(this.findName.toLowerCase())
       );
-      return items.sort((a, b) => a.caption > b.caption);
+      return persons.sort((a, b) => a.name > b.name);
     },
   },
   created() {
-    this.getItems();
+    this.getPersons();
   },
   methods: {
-    fileChanged(event) {
-      this.file = event.target.files[0];
+    selectPerson(person) {
+      this.findName = "";
+      this.findPerson = person;
     },
-    selectItem(item) {
-      this.findCaption = "";
-      this.findItem = item;
-    },
-    async editItem(item) {
+    async editPerson(person) {
       try {
-        await axios.put("/api/items/" + item._id, {
-          caption: this.findItem.caption,
-          date: this.findItem.date,
+        await axios.put("/api/persons/" + person._id, {
+          name: this.findPerson.name,
+          date: this.findPerson.date,
+          description: this.findPerson.description,
         });
-        this.findItem = null;
-        this.getItems();
+        this.findPerson = null;
+        this.getPersons();
         return true;
       } catch (error) {
         console.log(error);
       }
     },
-    async deleteItem(item) {
+    async deletePerson(person) {
       try {
-        await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
+        await axios.delete("/api/persons/" + person._id);
+        this.findPerson = null;
+        this.getPersons();
         return true;
       } catch (error) {
         console.log(error);
@@ -123,23 +123,20 @@ export default {
     async upload() {
       console.log("upload called");
       try {
-        const formData = new FormData();
-        formData.append("photo", this.file, this.file.caption);
-        let r1 = await axios.post("/api/photos", formData);
-        let r2 = await axios.post("/api/items", {
-          caption: this.caption,
+        let r2 = await axios.post("/api/persons", {
+          name: this.name,
           date: this.date,
-          path: r1.data.path,
+          description: this.description,
         });
-        this.addItem = r2.data;
+        this.addPerson = r2.data;
       } catch (error) {
         console.log(error);
       }
     },
-    async getItems() {
+    async getPersons() {
       try {
-        let response = await axios.get("/api/items");
-        this.items = response.data;
+        let response = await axios.get("/api/persons");
+        this.persons = response.data;
         return true;
       } catch (error) {
         console.log(error);

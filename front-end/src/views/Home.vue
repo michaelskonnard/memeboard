@@ -1,14 +1,26 @@
 <template>
   <div class="home">
+    <h1>Memes</h1>
     <section class="image-gallery">
       <div class="image" v-for="item in items" :key="item.id">
-        <h2>{{ item.title }}</h2>
+        <h2>{{ item.date }}</h2>
+        <img :src="item.path" />
+        <textarea class="textbox" :value="item.caption" placeholder="Caption" />
+      </div>
+    </section>
+    <br />
+    <hr />
+    <br />
+    <h1>Contributors</h1>
+    <section class="image-gallery">
+      <div class="image" v-for="person in persons" :key="person.id">
+        <h2>{{ person.name }}</h2>
+        <h2>{{ person.date }}</h2>
         <textarea
           class="textbox"
-          :value="item.description"
-          placeholder="Description"
+          :value="person.description"
+          placeholder="Information"
         />
-        <img :src="item.path" />
       </div>
     </section>
   </div>
@@ -22,16 +34,27 @@ export default {
   data() {
     return {
       items: [],
+      persons: [],
     };
   },
   created() {
     this.getItems();
+    this.getPersons();
   },
   methods: {
     async getItems() {
       try {
         let response = await axios.get("/api/items");
         this.items = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getPersons() {
+      try {
+        let response = await axios.get("/api/persons");
+        this.persons = response.data;
         return true;
       } catch (error) {
         console.log(error);
@@ -70,6 +93,7 @@ export default {
 .textbox {
   display: inline-block;
   width: 97%;
+  height: 75px;
 }
 
 /* Masonry on large screens */

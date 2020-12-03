@@ -21,24 +21,33 @@ const upload = multer({
 const mongoose = require("mongoose");
 
 // connect to the database
-mongoose.connect("mongodb://localhost:27017/museum", {
+mongoose.connect("mongodb://localhost:27017/memes", {
   useNewUrlParser: true,
 });
 
-// Create a scheme for items in the museum: a title and a path to an image.
+// Create a scheme for items in the memes: a name and a path to an image.
 const itemSchema = new mongoose.Schema({
-  title: String,
-  description: String,
+  caption: String,
+  date: String,
   path: String,
 });
 
-// Create a model for items in the museum.
+const personSchema = new mongoose.Schema({
+  name: String,
+  date: String,
+  description: String,
+});
+
+// Create a model for items in the memes.
 const Item = mongoose.model("Item", itemSchema);
 
-// Get a list of all of the items in the museum.
+const Person = mongoose.model("Person", personSchema);
+
+// Get a list of all of the items in the memes.
 app.get("/api/items", async (req, res) => {
   try {
     let items = await Item.find();
+
     res.send(items);
   } catch (error) {
     console.log(error);
@@ -46,16 +55,44 @@ app.get("/api/items", async (req, res) => {
   }
 });
 
-// Create a new item in the museum: takes a title and a path to an image.
+// Get a list of all of the items in the memes.
+app.get("/api/persons", async (req, res) => {
+  try {
+    let person = await Person.find();
+
+    res.send(person);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Create a new item in the memes: takes a name and a path to an image.
 app.post("/api/items", async (req, res) => {
   const item = new Item({
-    title: req.body.title,
-    description: req.body.description,
+    caption: req.body.caption,
+    date: req.body.date,
     path: req.body.path,
   });
   try {
     await item.save();
     res.send(item);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Create a new item in the memes: takes a name and a path to an image.
+app.post("/api/persons", async (req, res) => {
+  const person = new Person({
+    name: req.body.name,
+    date: req.body.date,
+    description: req.body.description,
+  });
+  try {
+    await person.save();
+    res.send(person);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -86,12 +123,38 @@ app.delete("/api/items/:id", async (req, res) => {
   }
 });
 
+app.delete("/api/persons/:id", async (req, res) => {
+  try {
+    await Person.deleteOne({
+      _id: req.params.id,
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 app.put("/api/items/:id", async (req, res) => {
   try {
     item = await Item.findOne({ _id: req.params.id });
-    item.title = req.body.title;
-    item.description = req.body.description;
+    item.caption = req.body.caption;
+    item.date = req.body.date;
     await item.save();
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+app.put("/api/persons/:id", async (req, res) => {
+  try {
+    person = await Person.findOne({ _id: req.params.id });
+    person.name = req.body.name;
+    person.date = req.body.date;
+    person.description = req.body.description;
+    await person.save();
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

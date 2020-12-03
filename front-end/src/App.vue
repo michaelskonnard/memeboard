@@ -3,11 +3,11 @@
     <div class="header">
       <router-link to="/">
         <div class="logo">
-          <img src="/ordinary.png" />
+          <img src="/mj.png" />
         </div>
       </router-link>
       <div class="title">
-        <h1>Museum of Ordinary Objects</h1>
+        <h1>The Meme Board</h1>
       </div>
     </div>
     <div class="content">
@@ -15,6 +15,8 @@
     </div>
     <div class="footer">
       <router-link to="/admin">Admin</router-link>
+      <p></p>
+      <router-link to="/person">Add Info</router-link>
       <p></p>
       <a
         href="https://github.com/BYU-CS-260-Winter-2020/lab-4-museum-of-ordinary-objects-michaelskonnard"
@@ -40,13 +42,14 @@ body {
 /* Header */
 .header {
   display: flex;
-  padding: 10px 100px 0px 100px;
-  background-color: #5bdeff;
+  padding: 10px 100px 10px 100px;
+  background-color: #ffd446;
   color: #1c454f;
 }
 
 .title {
   margin-top: 5px;
+  margin-left: 20px;
 }
 
 .title h1 {
@@ -60,9 +63,9 @@ body {
 
 /* Footer */
 .footer {
-  height: 50px;
+  height: 100px;
   padding: 20px 100px 0px 100px;
-  background: #e3e3e3;
+  background: #ffd446;
   font-size: 12px;
 }
 
