@@ -121,7 +121,7 @@ export default {
       }
     },
     async upload() {
-      console.log("upload called");
+      // console.log("upload called");
       try {
         const formData = new FormData();
         formData.append("photo", this.file, this.file.caption);

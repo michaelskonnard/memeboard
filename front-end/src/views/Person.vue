@@ -121,7 +121,7 @@ export default {
       }
     },
     async upload() {
-      console.log("upload called");
+      //   console.log("upload called");
       try {
         let r2 = await axios.post("/api/persons", {
           name: this.name,
