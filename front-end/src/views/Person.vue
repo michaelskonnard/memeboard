@@ -107,7 +107,7 @@ export default {
         this.getPersons();
         return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
     async deletePerson(person) {
@@ -117,7 +117,7 @@ export default {
         this.getPersons();
         return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
     async upload() {
@@ -130,7 +130,7 @@ export default {
         });
         this.addPerson = r2.data;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
     async getPersons() {
@@ -139,7 +139,7 @@ export default {
         this.persons = response.data;
         return true;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
   },
